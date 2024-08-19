@@ -10,25 +10,28 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-app.use(cors({origin : "*"}))
- 
 app.use(express.json());
 app.use("/user", userRouter);
-app.use("/note",auth,  noteRouter);
-
+app.use("/note", auth, noteRouter);
 
 app.get("/", (req, res) => {
-    res.send("Home Page");
+  res.send("Home Page");
 });
 
 app.listen(PORT, async () => {
-    try {
-        await connection;
-        console.log(`connected to database and server is running on ${PORT}`);
-    } catch (error) {
-        console.log(`failed to connect to database ${error.message }`);
-        
-    }
+  try {
+    await connection;
+    console.log(`connected to database and server is running on ${PORT}`);
+  } catch (error) {
+    console.log(`failed to connect to database ${error.message}`);
+  }
 });
-
